@@ -57,12 +57,12 @@ module.exports = {
 		} ),
 		new webpack.NormalModuleReplacementPlugin(
 			/bold\.svg/,
-			'/Users/dmitriymakushin/Documents/projects/ckeditor5-angular/src/assets/bold.svg'
-		),
-		new webpack.NormalModuleReplacementPlugin(
-			/italic\.svg/,
 			'/Users/dmitriymakushin/Documents/projects/ckeditor5-angular/src/assets/italic.svg',
-		)
+		),
+		// new webpack.NormalModuleReplacementPlugin(
+		// 	/bold\.svg/,
+		// 	'/Users/dmitriymakushin/Documents/projects/ckeditor5-angular/src/assets/bold.svg',
+		// )
 	],
 
 	module: {
