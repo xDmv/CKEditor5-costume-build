@@ -35,6 +35,8 @@ import ContextWatchdog from '@ckeditor/ckeditor5-watchdog/src/contextwatchdog';
 
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
+import { Placeholder, SimpleBox } from './index';
+
 class ClassicEditor extends ClassicEditorBase {}
 
 // Plugins to include in the build.
@@ -63,6 +65,8 @@ ClassicEditor.builtinPlugins = [
 	TableToolbar,
 	UploadAdapter,
 	Alignment,
+	SimpleBox,
+	Placeholder
 ];
 
 // Editor configuration.
@@ -89,6 +93,8 @@ ClassicEditor.defaultConfig = {
 			'mediaEmbed',
 			'|',
 			'alignment',
+			'simpleBox',
+			'placeholder'
 		]
 	},
 	image: {
@@ -99,15 +105,11 @@ ClassicEditor.defaultConfig = {
 			'imageTextAlternative'
 		]
 	},
-	table: {
-		contentToolbar: [
-			'tableColumn',
-			'tableRow',
-			'mergeTableCells'
-		]
-	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
-	language: 'en'
+	language: 'en',
+	placeholderConfig: {
+		types: [ 'date', 'color', 'first name', 'surname' ]
+	}
 };
 
 export default {
