@@ -37,6 +37,8 @@ import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 class ClassicEditor extends ClassicEditorBase {}
 
+import { Placeholder, SimpleBox } from './index';
+
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
 	Autoformat,
@@ -63,6 +65,8 @@ ClassicEditor.builtinPlugins = [
 	TableToolbar,
 	UploadAdapter,
 	Alignment,
+	Placeholder,
+	SimpleBox
 ];
 
 // Editor configuration.
@@ -89,6 +93,8 @@ ClassicEditor.defaultConfig = {
 			'mediaEmbed',
 			'|',
 			'alignment',
+			'simpleBox',
+			'placeholder',
 		]
 	},
 	image: {
@@ -107,7 +113,10 @@ ClassicEditor.defaultConfig = {
 		]
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
-	language: 'en'
+	language: 'en',
+	placeholderConfig: {
+		types: [ 'date', 'color', 'first name', 'surname' ]
+	}
 };
 
 export default {
