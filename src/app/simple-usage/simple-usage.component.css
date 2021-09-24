@@ -1,4 +1,15 @@
 :host ::ng-deep .ck.ck-editor__editable.ck-read-only {
-	background: #fafafa;
+	/*background: #fafafa;*/
 	color: #888;
+	background: aqua;
+}
+
+:host ::ng-deep .ck.ck-editor__editable.ck-read-only .placeholder {
+	color: red !important;
+	background: aqua;
+}
+
+.ck, .ck-widget {
+	color: red !important;
+	background: aqua;
 }

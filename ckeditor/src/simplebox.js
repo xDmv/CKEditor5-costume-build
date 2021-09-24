@@ -23,9 +23,11 @@ class SimpleBoxUI extends Plugin {
 			const buttonView = new ButtonView( locale );
 
 			buttonView.set( {
-				label: t( 'ExampleInput' ),
+				label: t( 'Insert' ),
 				withText: true,
-				tooltip: true
+				tooltip: true,
+				isEnabled: true,
+				isOn: true,
 			} );
 
 			buttonView.bind( 'isOn', 'isEnabled' ).to( command, 'value', 'isEnabled' );

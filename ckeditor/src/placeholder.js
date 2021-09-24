@@ -161,7 +161,7 @@ class PlaceholderEditing extends Plugin {
 				isAllowedInsideAttributeElement: true
 			} );
 
-			const innerText = viewWriter.createText( '{' + name + '}' );
+			const innerText = viewWriter.createText( name );
 			viewWriter.insert( viewWriter.createPositionAt( placeholderView, 0 ), innerText );
 
 			return placeholderView;
