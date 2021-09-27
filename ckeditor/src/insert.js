@@ -4,6 +4,7 @@ import Command from '@ckeditor/ckeditor5-core/src/command';
 import ButtonView from "@ckeditor/ckeditor5-ui/src/button/buttonview";
 import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget/src/utils';
 import defaultIcon from './icons/icon.svg';
+import { srcsetAttributeConverter } from "@ckeditor/ckeditor5-image/src/image/converters";
 
 export class Insert extends Plugin {
 	static get requires() {
@@ -75,6 +76,12 @@ class InsertEditing  extends Plugin {
 			allowContentOf: '$root'
 		} );
 
+		schema.register( 'insertBoxNewElement', {
+			isLimit: true,
+			allowIn: 'insertBox',
+			allowContentOf: '$root'
+		} );
+
 		schema.addChildCheck( ( context, childDefinition ) => {
 			if ( context.endsWith( 'insertBoxDescription' ) && childDefinition.name == 'insertBox' ) {
 				return false;
@@ -89,22 +96,22 @@ class InsertEditing  extends Plugin {
 			model: 'insertBox',
 			view: {
 				name: 'section',
-				classes: 'simple-box'
+				classes: 'insert-box'
 			}
 		} );
 		conversion.for( 'dataDowncast' ).elementToElement( {
 			model: 'insertBox',
 			view: {
 				name: 'section',
-				classes: 'simple-box'
+				classes: 'insert-box'
 			}
 		} );
 		conversion.for( 'editingDowncast' ).elementToElement( {
 			model: 'insertBox',
 			view: ( modelElement, { writer: viewWriter } ) => {
-				const section = viewWriter.createContainerElement( 'section', { class: 'simple-box' } );
+				const section = viewWriter.createContainerElement( 'section', { class: 'insert-box' } );
 
-				return toWidget( section, viewWriter, { label: 'simple box widget' } );
+				return toWidget( section, viewWriter, { label: 'insert box widget' } );
 			}
 		} );
 
@@ -113,20 +120,20 @@ class InsertEditing  extends Plugin {
 			model: 'insertBoxTitle',
 			view: {
 				name: 'h1',
-				classes: 'simple-box-title'
+				classes: 'insert-box-title'
 			}
 		} );
 		conversion.for( 'dataDowncast' ).elementToElement( {
 			model: 'insertBoxTitle',
 			view: {
 				name: 'h1',
-				classes: 'simple-box-title'
+				classes: 'insert-box-title'
 			}
 		} );
 		conversion.for( 'editingDowncast' ).elementToElement( {
 			model: 'insertBoxTitle',
 			view: ( modelElement, { writer: viewWriter } ) => {
-				const h1 = viewWriter.createEditableElement( 'h1', { class: 'simple-box-title' } );
+				const h1 = viewWriter.createEditableElement( 'h1', { class: 'insert-box-title' } );
 
 				return toWidgetEditable( h1, viewWriter );
 			}
@@ -136,23 +143,69 @@ class InsertEditing  extends Plugin {
 		conversion.for( 'upcast' ).elementToElement( {
 			model: 'insertBoxDescription',
 			view: {
-				name: 'input',
-				classes: 'simple-box-description'
+				name: 'div',
+				classes: 'insert-box-description'
 			}
 		} );
 		conversion.for( 'dataDowncast' ).elementToElement( {
 			model: 'insertBoxDescription',
 			view: {
-				name: 'input',
-				classes: 'simple-box-description'
+				name: 'div',
+				classes: 'insert-box-description'
 			}
 		} );
 		conversion.for( 'editingDowncast' ).elementToElement( {
 			model: 'insertBoxDescription',
 			view: ( modelElement, { writer: viewWriter } ) => {
-				const input = viewWriter.createEditableElement( 'input', { class: 'insert-box-description' } );
-				return toWidgetEditable( input, viewWriter );
+				const div = viewWriter.createEditableElement( 'div', { class: 'insert-box-description' } );
+				return toWidgetEditable( div, viewWriter );
 			}
+		} );
+
+		// <insertBoxDescription> converters Add new element
+		conversion.for( 'upcast' ).elementToElement( {
+			model: 'insertBoxNewElement',
+			view: {
+				name: 'input',
+				classes: 'insert-box-description'
+			}
+		} );
+		conversion.for( 'dataDowncast' ).elementToElement( {
+			model: 'insertBoxNewElement',
+			view: {
+				name: 'input',
+				classes: 'insert-box-description'
+			}
+		} );
+		// conversion.for( 'downcast' )
+		// 	.elementToElement( {
+		// 		model: 'myElement',
+		// 		view: 'input'
+		// 	} )
+		// 	.attributeToAttribute( {
+		// 		model: 'owner-id',
+		// 		view: 'data-owner-id'
+		// 	} )
+		// 	.attributeToAttribute( {
+		// 		model: 'type',
+		// 		view: modelAttributeValue => ( {
+		// 			key: 'class',
+		// 			value: `my-element my-element-${ modelAttributeValue }`
+		// 		} )
+		// 	} );
+		conversion.for( 'editingDowncast' ).elementToElement( {
+			model: 'insertBoxNewElement',
+			view: ( modelElement, { writer } ) => {
+				// writer.editing.view.focus();
+				//modelElement.setAttribute( 'ownerId', 1 );
+				return writer.createContainerElement( 'input', {
+					//'data-owner-id': modelElement.getAttribute( 'ownerId' ),
+					class: `element input`
+				} );
+			},
+			// triggerBy: {
+			// 	attributes: [ 'ownerId', 'type' ]
+			// }
 		} );
 	}
 }
@@ -160,27 +213,28 @@ class InsertEditing  extends Plugin {
 class insertInsertTestsCommand extends Command {
 	execute() {
 		this.editor.model.change( writer => {
-			console.log('writer: ', writer);
-			this.editor.model.insertContent( createSimpleBox( writer ) );
+			this.editor.model.insertContent( createInsertBox( writer ) );
 		} );
 	}
 
 	refresh() {
 		const model = this.editor.model;
 		const selection = model.document.selection;
-		const allowedIn = model.schema.findAllowedParent( selection.getFirstPosition(), 'simpleBox' );
+		const allowedIn = model.schema.findAllowedParent( selection.getFirstPosition(), 'insertBox' );
 
 		this.isEnabled = allowedIn !== null;
 	}
 }
 
-function createSimpleBox( writer ) {
-	const simpleBox = writer.createElement( 'simpleBox' );
-	const simpleBoxTitle = writer.createElement( 'simpleBoxTitle' );
-	const simpleBoxDescription = writer.createElement( 'simpleBoxDescription' );
-	writer.append( simpleBoxTitle, simpleBox );
-	writer.append( simpleBoxDescription, simpleBox );
-	writer.appendElement( 'paragraph', simpleBoxDescription );
+function createInsertBox( writer ) {
+	const insertBox = writer.createElement( 'insertBox' );
+	const insertBoxTitle = writer.createElement( 'insertBoxTitle' );
+	const insertBoxDescription = writer.createElement( 'insertBoxDescription' );
+	const insertBoxNewElement = writer.createElement( 'insertBoxNewElement' );
+	writer.append( insertBoxTitle, insertBox );
+	writer.append( insertBoxDescription, insertBox );
+	writer.append( insertBoxNewElement, insertBox );
+	writer.appendElement( 'paragraph', insertBoxDescription );
 
-	return simpleBox;
+	return insertBox;
 }

@@ -37,7 +37,7 @@ import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 class ClassicEditor extends ClassicEditorBase {}
 
-import { Placeholder, SimpleBox, Insert } from './index';
+import { Placeholder, Insert } from './index';
 
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
@@ -66,7 +66,6 @@ ClassicEditor.builtinPlugins = [
 	UploadAdapter,
 	Alignment,
 	Placeholder,
-	SimpleBox,
 	Insert
 ];
 
@@ -94,7 +93,6 @@ ClassicEditor.defaultConfig = {
 			'mediaEmbed',
 			'|',
 			'alignment',
-			'simpleBox',
 			'placeholder',
 			'|',
 			'InsertTests'
