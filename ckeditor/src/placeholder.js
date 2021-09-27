@@ -95,7 +95,6 @@ class PlaceholderEditing extends Plugin {
 	}
 
 	init() {
-		console.log( 'PlaceholderEditing#init() got called' );
 
 		this._defineSchema();
 		this._defineConverters();
