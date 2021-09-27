@@ -1,18 +1,15 @@
 :host ::ng-deep .ck.ck-editor__editable.ck-read-only {
-	background: #fafafa;
+	/*background: #fafafa;*/
 	color: #888;
+	background: aqua;
 }
 
-.simple-box {
-	padding: 10px;
-	margin: 1em 0;
-
-	background: rgba( 0, 0, 0, 0.1 );
-	border: solid 1px hsl(100, 20%, 9%);
-	border-radius: 2px;
+:host ::ng-deep .ck.ck-editor__editable.ck-read-only .placeholder {
+	color: red !important;
+	background: aqua;
 }
 
-.placeholder {
-	background: #696969;
-	color: coral;
+.ck, .ck-widget {
+	color: red !important;
+	background: aqua;
 }

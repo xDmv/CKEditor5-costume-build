@@ -46,8 +46,6 @@ module.exports = {
 
 	plugins: [
 		new CKEditorWebpackPlugin( {
-			// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
-			// When changing the built-in language, remember to also change it in the editor's configuration (src/ckeditor.js).
 			language: 'en',
 			additionalLanguages: 'all'
 		} ),
@@ -55,14 +53,6 @@ module.exports = {
 			banner: bundler.getLicenseBanner(),
 			raw: true
 		} ),
-		new webpack.NormalModuleReplacementPlugin(
-			/bold\.svg/,
-			'/Users/dmitriymakushin/Documents/projects/ckeditor5-angular/src/assets/italic.svg',
-		),
-		// new webpack.NormalModuleReplacementPlugin(
-		// 	/bold\.svg/,
-		// 	'/Users/dmitriymakushin/Documents/projects/ckeditor5-angular/src/assets/bold.svg',
-		// )
 	],
 
 	module: {

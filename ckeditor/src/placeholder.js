@@ -95,7 +95,6 @@ class PlaceholderEditing extends Plugin {
 	}
 
 	init() {
-		console.log( 'PlaceholderEditing#init() got called' );
 
 		this._defineSchema();
 		this._defineConverters();
@@ -161,7 +160,7 @@ class PlaceholderEditing extends Plugin {
 				isAllowedInsideAttributeElement: true
 			} );
 
-			const innerText = viewWriter.createText( '{' + name + '}' );
+			const innerText = viewWriter.createText( name );
 			viewWriter.insert( viewWriter.createPositionAt( placeholderView, 0 ), innerText );
 
 			return placeholderView;

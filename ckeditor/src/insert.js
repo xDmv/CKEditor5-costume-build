@@ -1,44 +1,48 @@
-import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget/src/utils';
 import Widget from '@ckeditor/ckeditor5-widget/src/widget';
 import Command from '@ckeditor/ckeditor5-core/src/command';
+import ButtonView from "@ckeditor/ckeditor5-ui/src/button/buttonview";
+import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget/src/utils';
+import defaultIcon from './icons/icon.svg';
 
-export class SimpleBox extends Plugin {
+export class Insert extends Plugin {
 	static get requires() {
-		return [ SimpleBoxEditing, SimpleBoxUI ];
+		return [ InsertUI, InsertEditing  ];
 	}
 }
 
-class SimpleBoxUI extends Plugin {
+class InsertUI extends Plugin {
 	init() {
 
 		const editor = this.editor;
 		const t = editor.t;
 
-		editor.ui.componentFactory.add( 'simpleBox', locale => {
-			const command = editor.commands.get( 'insertSimpleBox' );
+		editor.ui.componentFactory.add(
+			'InsertTests', locale => {
+				const command = editor.commands.get( 'insertInsertTests' );
 
-			const buttonView = new ButtonView( locale );
+				const buttonView = new ButtonView( locale );
 
-			buttonView.set( {
-				label: t( 'Insert' ),
-				withText: true,
-				tooltip: true,
-				isEnabled: true,
-				isOn: true,
-			} );
+				buttonView.set( {
+					label: t( 'Insert' ),
+					withText: true,
+					tooltip: true,
+					icon: defaultIcon,
+					isEnabled: true,
+					isOn: true,
+				} );
 
-			buttonView.bind( 'isOn', 'isEnabled' ).to( command, 'value', 'isEnabled' );
+				buttonView.bind( 'isOn', 'isEnabled' ).to( command, 'value', 'isEnabled' );
 
-			this.listenTo( buttonView, 'execute', () => editor.execute( 'insertSimpleBox' ) );
+				this.listenTo( buttonView, 'execute', () => editor.execute( 'insertInsertTests' ) );
 
-			return buttonView;
-		} );
+				return buttonView;
+			}
+		);
 	}
 }
 
-class SimpleBoxEditing extends Plugin {
+class InsertEditing  extends Plugin {
 	static get requires() {
 		return [ Widget ];
 	}
@@ -48,31 +52,31 @@ class SimpleBoxEditing extends Plugin {
 		this._defineSchema();
 		this._defineConverters();
 
-		this.editor.commands.add( 'insertSimpleBox', new InsertSimpleBoxCommand( this.editor ) );
+		this.editor.commands.add( 'insertInsertTests', new insertInsertTestsCommand( this.editor ) );
 	}
 
 	_defineSchema() {
 		const schema = this.editor.model.schema;
 
-		schema.register( 'simpleBox', {
+		schema.register( 'insertBox', {
 			isObject: true,
 			allowWhere: '$block',
 		} );
 
-		schema.register( 'simpleBoxTitle', {
+		schema.register( 'insertBoxTitle', {
 			isLimit: true,
-			allowIn: 'simpleBox',
+			allowIn: 'insertBox',
 			allowContentOf: '$block',
 		} );
 
-		schema.register( 'simpleBoxDescription', {
+		schema.register( 'insertBoxDescription', {
 			isLimit: true,
-			allowIn: 'simpleBox',
+			allowIn: 'insertBox',
 			allowContentOf: '$root'
 		} );
 
 		schema.addChildCheck( ( context, childDefinition ) => {
-			if ( context.endsWith( 'simpleBoxDescription' ) && childDefinition.name == 'simpleBox' ) {
+			if ( context.endsWith( 'insertBoxDescription' ) && childDefinition.name == 'insertBox' ) {
 				return false;
 			}
 		} );
@@ -82,21 +86,21 @@ class SimpleBoxEditing extends Plugin {
 		const conversion = this.editor.conversion;
 
 		conversion.for( 'upcast' ).elementToElement( {
-			model: 'simpleBox',
+			model: 'insertBox',
 			view: {
 				name: 'section',
 				classes: 'simple-box'
 			}
 		} );
 		conversion.for( 'dataDowncast' ).elementToElement( {
-			model: 'simpleBox',
+			model: 'insertBox',
 			view: {
 				name: 'section',
 				classes: 'simple-box'
 			}
 		} );
 		conversion.for( 'editingDowncast' ).elementToElement( {
-			model: 'simpleBox',
+			model: 'insertBox',
 			view: ( modelElement, { writer: viewWriter } ) => {
 				const section = viewWriter.createContainerElement( 'section', { class: 'simple-box' } );
 
@@ -104,59 +108,59 @@ class SimpleBoxEditing extends Plugin {
 			}
 		} );
 
-		// <simpleBoxTitle> converters
+		// <insertBoxTitle> converters
 		conversion.for( 'upcast' ).elementToElement( {
-			model: 'simpleBoxTitle',
+			model: 'insertBoxTitle',
 			view: {
 				name: 'h1',
 				classes: 'simple-box-title'
 			}
 		} );
 		conversion.for( 'dataDowncast' ).elementToElement( {
-			model: 'simpleBoxTitle',
+			model: 'insertBoxTitle',
 			view: {
 				name: 'h1',
 				classes: 'simple-box-title'
 			}
 		} );
 		conversion.for( 'editingDowncast' ).elementToElement( {
-			model: 'simpleBoxTitle',
+			model: 'insertBoxTitle',
 			view: ( modelElement, { writer: viewWriter } ) => {
-				// Note: You use a more specialized createEditableElement() method here.
 				const h1 = viewWriter.createEditableElement( 'h1', { class: 'simple-box-title' } );
 
 				return toWidgetEditable( h1, viewWriter );
 			}
 		} );
 
-		// <simpleBoxDescription> converters
+		// <insertBoxDescription> converters
 		conversion.for( 'upcast' ).elementToElement( {
-			model: 'simpleBoxDescription',
+			model: 'insertBoxDescription',
 			view: {
-				name: 'div',
+				name: 'input',
 				classes: 'simple-box-description'
 			}
 		} );
 		conversion.for( 'dataDowncast' ).elementToElement( {
-			model: 'simpleBoxDescription',
+			model: 'insertBoxDescription',
 			view: {
-				name: 'div',
+				name: 'input',
 				classes: 'simple-box-description'
 			}
 		} );
 		conversion.for( 'editingDowncast' ).elementToElement( {
-			model: 'simpleBoxDescription',
+			model: 'insertBoxDescription',
 			view: ( modelElement, { writer: viewWriter } ) => {
-				const div = viewWriter.createEditableElement( 'div', { class: 'simple-box-description' } );
-				return toWidgetEditable( div, viewWriter );
+				const input = viewWriter.createEditableElement( 'input', { class: 'insert-box-description' } );
+				return toWidgetEditable( input, viewWriter );
 			}
 		} );
 	}
 }
 
-class InsertSimpleBoxCommand extends Command {
+class insertInsertTestsCommand extends Command {
 	execute() {
 		this.editor.model.change( writer => {
+			console.log('writer: ', writer);
 			this.editor.model.insertContent( createSimpleBox( writer ) );
 		} );
 	}
