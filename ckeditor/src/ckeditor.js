@@ -116,7 +116,7 @@ ClassicEditor.defaultConfig = {
 	// This value must be kept in sync with the language defined in webpack.config.js.
 	language: 'en',
 	placeholderConfig: {
-		types: [ 'date', 'color', 'first name', 'surname' ]
+		types: [ 'date', 'color', 'block1', 'block2' ]
 	}
 };
 

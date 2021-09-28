@@ -7,6 +7,8 @@ import { addListToDropdown, createDropdown } from '@ckeditor/ckeditor5-ui/src/dr
 import Collection from '@ckeditor/ckeditor5-utils/src/collection';
 import Model from '@ckeditor/ckeditor5-ui/src/model';
 
+import './theme/styles.css';
+
 export class Placeholder extends Plugin {
 	static get requires() {
 		return [ PlaceholderEditing, PlaceholderUI ];
@@ -127,7 +129,7 @@ class PlaceholderEditing extends Plugin {
 
 		conversion.for( 'upcast' ).elementToElement( {
 			view: {
-				name: 'span',
+				name: 'div',
 				classes: [ 'placeholder' ]
 			},
 			model: ( viewElement, { writer: modelWriter } ) => {
@@ -154,6 +156,20 @@ class PlaceholderEditing extends Plugin {
 		function createPlaceholderView( modelItem, viewWriter ) {
 			const name = modelItem.getAttribute( 'name' );
 
+			console.log('name: ', name);
+			if (name === 'color') {
+				const placeholderView = viewWriter.createContainerElement( 'span', {
+					class: 'colors'
+				}, {
+					isAllowedInsideAttributeElement: true
+				} );
+
+				const innerText = viewWriter.createText( name );
+
+				viewWriter.insert( viewWriter.createPositionAt( placeholderView, 0 ), innerText );
+
+				return placeholderView;
+			}
 			const placeholderView = viewWriter.createContainerElement( 'span', {
 				class: 'placeholder'
 			}, {
@@ -161,6 +177,7 @@ class PlaceholderEditing extends Plugin {
 			} );
 
 			const innerText = viewWriter.createText( name );
+
 			viewWriter.insert( viewWriter.createPositionAt( placeholderView, 0 ), innerText );
 
 			return placeholderView;

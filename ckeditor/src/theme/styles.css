@@ -1,0 +1,22 @@
+.placeholder {
+	width: 100px;
+	height: 10px;
+	border: 2px solid #0000ff;
+	border-radius: 8px;
+	background: darkcyan;
+	color: snow;
+	padding: 8px;
+}
+
+.colors {
+	width: 100px;
+	height: 10px;
+	border: 2px solid #0000ff;
+	border-radius: 8px;
+	background: #000080;
+	color: #ff00ff;
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

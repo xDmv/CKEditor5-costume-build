@@ -4,7 +4,7 @@ import Command from '@ckeditor/ckeditor5-core/src/command';
 import ButtonView from "@ckeditor/ckeditor5-ui/src/button/buttonview";
 import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget/src/utils';
 import defaultIcon from './icons/icon.svg';
-import { srcsetAttributeConverter } from "@ckeditor/ckeditor5-image/src/image/converters";
+
 
 export class Insert extends Plugin {
 	static get requires() {
