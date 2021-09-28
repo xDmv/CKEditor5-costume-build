@@ -7,6 +7,10 @@ import { addListToDropdown, createDropdown } from '@ckeditor/ckeditor5-ui/src/dr
 import Collection from '@ckeditor/ckeditor5-utils/src/collection';
 import Model from '@ckeditor/ckeditor5-ui/src/model';
 
+import EmitterMixin from '@ckeditor/ckeditor5-utils/src/emittermixin';
+import mix from '@ckeditor/ckeditor5-utils/src/mix';
+import EventInfo from '@ckeditor/ckeditor5-utils/src/eventinfo';
+
 import './theme/styles.css';
 
 export class Placeholder extends Plugin {
@@ -98,6 +102,8 @@ class PlaceholderEditing extends Plugin {
 
 	init() {
 
+		// const eventInfo = new EventInfo( this, 'eventName' );
+
 		this._defineSchema();
 		this._defineConverters();
 
@@ -141,11 +147,16 @@ class PlaceholderEditing extends Plugin {
 
 		conversion.for( 'editingDowncast' ).elementToElement( {
 			model: 'placeholder',
-			view: ( modelItem, { writer: viewWriter } ) => {
-				const widgetElement = createPlaceholderView( modelItem, viewWriter );
+			view: ( editor ) => {
+				return editor.createRawElement(
 
-				return toWidget( widgetElement, viewWriter );
+				)
 			}
+			// 	( modelItem, { writer: viewWriter } ) => {
+			// 	const widgetElement = createPlaceholderView( modelItem, viewWriter );
+			//
+			// 	return toWidget( widgetElement, viewWriter );
+			// }
 		} );
 
 		conversion.for( 'dataDowncast' ).elementToElement( {
@@ -167,14 +178,23 @@ class PlaceholderEditing extends Plugin {
 				const innerText = viewWriter.createText( name );
 
 				viewWriter.insert( viewWriter.createPositionAt( placeholderView, 0 ), innerText );
+				// viewWriter.setAttribute('id', 1);
 
+				// emitter.on( 'pluginclick', ( eventInfo, data ) => {
+				// 	console.log( 'foo:', data );
+				// 	eventInfo.stop();
+				// } );
+				console.log('placeholderView: ', placeholderView);
+				// placeholderView.setAttribute('onclick', console.log('dfdfdf'))
 				return placeholderView;
 			}
+
 			const placeholderView = viewWriter.createContainerElement( 'span', {
 				class: 'placeholder'
 			}, {
 				isAllowedInsideAttributeElement: true
 			} );
+
 
 			const innerText = viewWriter.createText( name );
 
