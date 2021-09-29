@@ -83,7 +83,7 @@ class InsertEditing  extends Plugin {
 		} );
 
 		schema.addChildCheck( ( context, childDefinition ) => {
-			if ( context.endsWith( 'insertBoxDescription' ) && childDefinition.name == 'insertBox' ) {
+			if ( context.endsWith( 'insertBoxDescription' ) && childDefinition.name === 'insertBox' ) {
 				return false;
 			}
 		} );

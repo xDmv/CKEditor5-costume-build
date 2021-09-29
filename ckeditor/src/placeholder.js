@@ -7,10 +7,6 @@ import { addListToDropdown, createDropdown } from '@ckeditor/ckeditor5-ui/src/dr
 import Collection from '@ckeditor/ckeditor5-utils/src/collection';
 import Model from '@ckeditor/ckeditor5-ui/src/model';
 
-import EmitterMixin from '@ckeditor/ckeditor5-utils/src/emittermixin';
-import mix from '@ckeditor/ckeditor5-utils/src/mix';
-import EventInfo from '@ckeditor/ckeditor5-utils/src/eventinfo';
-
 import './theme/styles.css';
 
 export class Placeholder extends Plugin {
@@ -40,9 +36,7 @@ class PlaceholderCommand extends Command {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 
-		const isAllowed = model.schema.checkChild( selection.focus.parent, 'placeholder' );
-
-		this.isEnabled = isAllowed;
+		this.isEnabled = model.schema.checkChild( selection.focus.parent, 'placeholder' );
 	}
 }
 
@@ -147,16 +141,11 @@ class PlaceholderEditing extends Plugin {
 
 		conversion.for( 'editingDowncast' ).elementToElement( {
 			model: 'placeholder',
-			view: ( editor ) => {
-				return editor.createRawElement(
+			view: ( modelItem, { writer: viewWriter } ) => {
+				const widgetElement = createPlaceholderView( modelItem, viewWriter );
 
-				)
+				return toWidget( widgetElement, viewWriter );
 			}
-			// 	( modelItem, { writer: viewWriter } ) => {
-			// 	const widgetElement = createPlaceholderView( modelItem, viewWriter );
-			//
-			// 	return toWidget( widgetElement, viewWriter );
-			// }
 		} );
 
 		conversion.for( 'dataDowncast' ).elementToElement( {
@@ -166,28 +155,6 @@ class PlaceholderEditing extends Plugin {
 
 		function createPlaceholderView( modelItem, viewWriter ) {
 			const name = modelItem.getAttribute( 'name' );
-
-			console.log('name: ', name);
-			if (name === 'color') {
-				const placeholderView = viewWriter.createContainerElement( 'span', {
-					class: 'colors'
-				}, {
-					isAllowedInsideAttributeElement: true
-				} );
-
-				const innerText = viewWriter.createText( name );
-
-				viewWriter.insert( viewWriter.createPositionAt( placeholderView, 0 ), innerText );
-				// viewWriter.setAttribute('id', 1);
-
-				// emitter.on( 'pluginclick', ( eventInfo, data ) => {
-				// 	console.log( 'foo:', data );
-				// 	eventInfo.stop();
-				// } );
-				console.log('placeholderView: ', placeholderView);
-				// placeholderView.setAttribute('onclick', console.log('dfdfdf'))
-				return placeholderView;
-			}
 
 			const placeholderView = viewWriter.createContainerElement( 'span', {
 				class: 'placeholder'
